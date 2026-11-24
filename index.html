@@ -72,6 +72,13 @@
         font-size: 24px;
       }
 
+      .count .percent {
+        margin-left: 8px;
+        color: #667085;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
       .spacer {
         flex: 1;
       }
@@ -215,6 +222,7 @@
         <div class="count">
           <strong id="selectedCount">0</strong>
           <span>/47</span>
+          <span class="percent" id="selectedPercent">0%</span>
         </div>
         <span class="hint">都道府県をクリックして選択・解除　·　ホイール／2本指で拡大・縮小</span>
         <div class="spacer"></div>
@@ -434,15 +442,21 @@
 
       function toggle(path) {
         path.classList.toggle("selected");
-        document.querySelector("#selectedCount").textContent =
-          document.querySelectorAll(".pref.selected").length;
+        updateCount();
+      }
+
+      function updateCount() {
+        const selected = document.querySelectorAll(".pref.selected").length;
+        document.querySelector("#selectedCount").textContent = selected;
+        document.querySelector("#selectedPercent").textContent =
+          `${Math.round((selected / 47) * 100)}%`;
       }
 
       function reset() {
         document.querySelectorAll(".pref.selected").forEach((path) => {
           path.classList.remove("selected");
         });
-        document.querySelector("#selectedCount").textContent = "0";
+        updateCount();
         scale = 1;
         tx = 0;
         ty = 0;
